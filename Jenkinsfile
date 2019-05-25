@@ -6,10 +6,8 @@ node {
     // holds reference to docker image
     def dockerImage
     // ip address of the docker private repository(nexus)
-    
-    def dockerRepoUrl = "localhost:2222"
-    def dockerImageName = "ioshowerdashboard"
-    def dockerImageTag = "${env.BUILD_NUMBER}"
+ 
+    def dockerImageTag = "ioshowerdashboard${env.BUILD_NUMBER}"
     
     stage('Clone Repo') { // for display purposes
       // Get some code from a GitHub repository
@@ -36,10 +34,16 @@ node {
 		
       echo "Docker Image Tag Name: ${dockerImageTag}"
 	  
-	   docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            dockerImage.push("${env.BUILD_NUMBER}")
-            dockerImage.push("latest")
-        }
+	  sh "docker stop ioshowerdashboard"
+	  
+	  sh "docker rm ioshowerdashboard"
+	  
+	  sh "docker run --name ioshowerdashboard -p 2222:2222 ioshowerdashboard:${env.BUILD_NUMBER}
+	  
+	  // docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+      //    dockerImage.push("${env.BUILD_NUMBER}")
+      //      dockerImage.push("latest")
+      //  }
       
     }
 }
