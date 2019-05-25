@@ -38,7 +38,7 @@ node {
 	  
 	  sh "docker rm ioshowerdashboard"
 	  
-	  sh "docker run --name ioshowerdashboard --detach -p 2222:2222 ioshowerdashboard:${env.BUILD_NUMBER}"
+	  sh "docker run --name ioshowerdashboard -d -p 2222:2222 ioshowerdashboard:${env.BUILD_NUMBER}"
 	  
 	  // docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
       //    dockerImage.push("${env.BUILD_NUMBER}")
