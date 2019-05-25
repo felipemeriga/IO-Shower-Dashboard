@@ -35,9 +35,11 @@ node {
       // deploy docker image to nexus
 		
       echo "Docker Image Tag Name: ${dockerImageTag}"
-	  sh "docker login -u felipemeriga1 -p iloverpg1"
 	  
-	  dockerImage.push()
+	   docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+            dockerImage.push("${env.BUILD_NUMBER}")
+            dockerImage.push("latest")
+        }
       
     }
 }
