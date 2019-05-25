@@ -33,8 +33,9 @@ node {
     stage('Deploy Docker Image'){
       
       // deploy docker image to nexus
-
+		
       echo "Docker Image Tag Name: ${dockerImageTag}"
+	  sh "docker login -u felipemeriga1 -p iloverpg1"
 	  
 	  dockerImage.push()
       
