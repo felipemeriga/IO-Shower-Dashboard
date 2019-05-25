@@ -9,7 +9,7 @@ node {
     
     def dockerRepoUrl = "localhost:2222"
     def dockerImageName = "ioshowerdashboard"
-    def dockerImageTag = "${dockerRepoUrl}/${dockerImageName}:${env.BUILD_NUMBER}"
+    def dockerImageTag = "${env.BUILD_NUMBER}"
     
     stage('Clone Repo') { // for display purposes
       // Get some code from a GitHub repository
@@ -27,7 +27,7 @@ node {
 		
     stage('Build Docker Image') {
       // build docker image
-      dockerImage = docker.build("ioshowerdashboard")
+      dockerImage = docker.build("ioshowerdashboard:${env.BUILD_NUMBER}")
     }
    
     stage('Deploy Docker Image'){
@@ -35,9 +35,8 @@ node {
       // deploy docker image to nexus
 
       echo "Docker Image Tag Name: ${dockerImageTag}"
-
-      sh "docker login -u felipemeriga1 -p iloverpg1 ${dockerRepoUrl}"
-      sh "docker tag ${dockerImageName} ${dockerImageTag}"
-      sh "docker push ${dockerImageTag}"
+	  
+	  dockerImage.push()
+      
     }
 }
